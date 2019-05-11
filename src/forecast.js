@@ -19,8 +19,8 @@ getForecast(){
 
 displayForecast(data){
 
-    const dayEl = document.querySelector('#predpoved');
-    dayEl.textContent = getNiceHumanForecast(data.list[8].dt);
+    const day1El = document.querySelector('#predpoved');
+    day1El.textContent = getNiceHumanForecast(data.list[8].dt);
 
 
     let superIkona = getWeatherIcon(data.list[8].weather[0].id, data.list[8].weather[0].icon);
@@ -28,18 +28,16 @@ displayForecast(data){
     ikonaEl.innerHTML = superIkona;
 
 
-    console.log("zitrejsi ikona " + data.list[8].weather[0].icon);
-    console.log("nejnizsi teplota bude " + Math.round(data.list[8].main.temp_min) +" °C");
-
-
-    
-    function showForecast(data){
+//zobrazí předpověď 
+    function showForecast(){
         const forecast = document.querySelector('#predpoved');   
         let html = '';
+
+        let niceDate = getNiceHumanForecast(data.list[8].dt)
         html = html + `
             <div class="forecast">
-                <div class="forecast__day">${data.list[8].dt}</div>
-                <div class="forecast__icon"> ${superIkona}</i>   </div>
+                <div class="forecast__day">${niceDate}</div>
+                <div class="forecast__icon"> ${superIkona}</i> </div>
                 <div class="forecast__temp"> ${Math.round(data.list[8].main.temp_min)}</div>
             </div>        
             `
@@ -48,14 +46,15 @@ displayForecast(data){
     }
     showForecast();
 
-   
+//přepočíta šíleně divné číslo na datum v normální formě 
     function getNiceHumanForecast(unixTimestamp) {
         let datum = new Date(unixTimestamp * 1000);
         let day = datum.getDay();
         let date = datum.getDate();
         let month =datum.getMonth();
         console.log (day);
-       
+
+// vrátí nám den ve správném formátu : Pondělí 1.1.
         function returnDay(day){
             let den = '';
             if (day === 0){
@@ -76,10 +75,9 @@ displayForecast(data){
             return den
         }
 
-        console.log (`${returnDay(day)} ${date}. ${month+1}.` ) 
+        return (`${returnDay(day)} ${date}. ${month+1}.` ) 
      
     } 
-
 
 }
 
